@@ -11,6 +11,11 @@
 	},
 	"plugins": ["react", "eslint-plugin-react", "jest"],
 	"extends": ["airbnb-base", "plugin:react/recommended"],
+	"settings": {
+		"react": {
+			"version": "16.5"
+		}
+	},
 	"env": {
 		"jest/globals": true
 	},
