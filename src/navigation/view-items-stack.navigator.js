@@ -1,22 +1,22 @@
 import React from 'react';
 import { Platform } from 'react-native';
 import { createStackNavigator } from 'react-navigation';
-import { AddItemContainer } from '../components/containers/add-item.container';
 import { TabBarIcon } from '../components/presentationals/tab-bar-icon.presentational';
+import { ViewItemsContainer } from '../components/containers/view-items.container';
 
-export const AddItemStack = createStackNavigator({
-	AddItem: AddItemContainer
+export const ViewItemsStack = createStackNavigator({
+	ViewItems: ViewItemsContainer
 });
 
-AddItemStack.navigationOptions = {
-	tabBarLabel: 'Add Item',
+ViewItemsStack.navigationOptions = {
+	tabBarLabel: 'View Items',
 	tabBarIcon: ({ focused }) => (
 		<TabBarIcon
 			focused={focused}
 			name={
 				Platform.OS === 'ios'
-					? `ios-information-circle${focused ? '' : '-outline'}`
-					: 'md-information-circle'
+					? `ios-link${focused ? '' : '-outline'}`
+					: 'md-link'
 			}
 		/>
 	)
