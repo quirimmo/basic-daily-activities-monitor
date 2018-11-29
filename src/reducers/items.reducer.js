@@ -1,8 +1,6 @@
-const items = (state = [], action) => {
+export const items = (state = [], action) => {
 	switch (action.type) {
 		default:
 			return state;
 	}
 };
-
-export default items;

@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import SQLiteProxy from './src/services/sqlite-proxy.service';
-import reducers from './src/reducers/reducers';
+import { reducers } from './src/reducers/reducers';
 import { mySaga } from './src/sagas/sagas';
 import globalStyles from './src/styles/global.styles';
 import { AppSwitchNavigator } from './src/navigation/app-switch.navigator';
@@ -26,6 +26,7 @@ export default class App extends React.Component {
 		try {
 			const sqliteProxy = SQLiteProxy.getInstance();
 			await sqliteProxy.createTables();
+			console.log('Database created correctly');
 		} catch (error) {
 			console.error('Error creating the database structure', error);
 		}
