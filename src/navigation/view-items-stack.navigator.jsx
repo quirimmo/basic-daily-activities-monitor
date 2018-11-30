@@ -1,8 +1,8 @@
 import React from 'react';
 import { Platform } from 'react-native';
 import { createStackNavigator } from 'react-navigation';
-import { TabBarIcon } from '../components/presentationals/tab-bar-icon.presentational';
-import { ViewItemsContainer } from '../components/containers/view-items.container';
+import { TabBarIcon } from '../components/presentationals/tab-bar-icon.presentational.jsx';
+import { ViewItemsContainer } from '../components/containers/view-items.container.jsx';
 
 export const ViewItemsStack = createStackNavigator({
 	ViewItems: ViewItemsContainer

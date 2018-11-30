@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import { View } from 'react-native';
 import { Button } from 'react-native-elements';
 import globalStyles from '../styles/global.styles';
-import { AddUpdateItem } from '../components/presentationals/add-update-item.presentational';
+import { AddUpdateItem } from '../components/presentationals/add-update-item.presentational.jsx';
+import { Item } from '../models/item.model';
 
 export class AddItemScreen extends React.Component {
 	static navigationOptions = {
@@ -24,10 +25,8 @@ export class AddItemScreen extends React.Component {
 		);
 	}
 
-
 	onAddItem() {
-		console.log('view. Adding item');
-		this.props.addItem({});
+		this.props.addItem(new Item());
 	}
 }
 

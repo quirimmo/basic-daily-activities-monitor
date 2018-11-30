@@ -1,6 +1,6 @@
 import { all } from 'redux-saga/effects';
-import { watchFetchItems, watchAddItem } from './items.sagas';
+import { itemsActionWatcher } from './items.sagas';
 
 export function* mySaga() {
-	yield all([watchFetchItems(), watchAddItem()]);
+	yield all([itemsActionWatcher()]);
 }

@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { AddItemScreen } from '../../screens/add-item.screen';
+import { AddItemScreen } from '../../screens/add-item.screen.jsx';
 import { addItem } from '../../actions/items.actions';
 
 const mapStateToProps = () => ({});
