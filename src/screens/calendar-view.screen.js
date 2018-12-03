@@ -2,6 +2,7 @@ import React from 'react';
 import moment from 'moment';
 import { View } from 'react-native';
 import { Agenda } from 'react-native-calendars';
+import PropTypes from 'prop-types';
 import globalStyles from '../styles/global.styles';
 import { AddUpdateItem } from '../components/presentationals/add-update-item.presentational';
 import { Item } from '../models/item.model';
@@ -11,45 +12,12 @@ export class CalendarViewScreen extends React.Component {
 		title: 'Calendar View'
 	};
 
-	defaultItem = new Item('2018-12-03');
+	defaultItem = Item.getTestItem();
 
 	constructor(props) {
 		super(props);
 		this.state = {
 			selectedDay: null
-		};
-
-		this.defaultItem.breakfast = {
-			start: moment(this.defaultItem.date)
-				.hours(8)
-				.minutes(8),
-			end: moment(this.defaultItem.date)
-				.hours(8)
-				.minutes(28)
-		};
-		this.defaultItem.lunch = {
-			start: moment(this.defaultItem.date)
-				.hours(13)
-				.minutes(13),
-			end: moment(this.defaultItem.date)
-				.hours(13)
-				.minutes(33)
-		};
-		this.defaultItem.dinner = {
-			start: moment(this.defaultItem.date)
-				.hours(20)
-				.minutes(20),
-			end: moment(this.defaultItem.date)
-				.hours(20)
-				.minutes(40)
-		};
-		this.defaultItem.sleep = {
-			start: moment(this.defaultItem.date)
-				.hours(23)
-				.minutes(23),
-			end: moment(this.defaultItem.date)
-				.hours(7)
-				.minutes(7)
 		};
 	}
 
@@ -59,9 +27,10 @@ export class CalendarViewScreen extends React.Component {
 
 	addItem = item => {
 		console.log('adding item:', item);
+		this.props.addItem(item);
+		setTimeout(() => console.log('state:', this.props.items), 2000);
 	};
 
-	
 	render() {
 		return (
 			<View style={globalStyles.screenContainer}>
@@ -75,14 +44,14 @@ export class CalendarViewScreen extends React.Component {
 					renderEmptyData={() => (
 						<AddUpdateItem
 							item={new Item(this.state.selectedDay)}
-							onSubmitItem={() => this.addItem(this.state.selectedDay)}
+							onSubmitItem={item => this.addItem(item)}
 						/>
 					)}
 					renderDay={() => null}
 					renderItem={item => (
 						<AddUpdateItem
 							item={item}
-							onSubmitItem={() => this.updateItem(item)}
+							onSubmitItem={currItem => this.updateItem(currItem)}
 						/>
 					)}
 					rowHasChanged={(r1, r2) => r1.key !== r2.key}
@@ -92,4 +61,7 @@ export class CalendarViewScreen extends React.Component {
 	}
 }
 
-CalendarViewScreen.propTypes = {};
+CalendarViewScreen.propTypes = {
+	items: PropTypes.arrayOf(PropTypes.instanceOf(Item)),
+	addItem: PropTypes.func
+};

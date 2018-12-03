@@ -30,7 +30,7 @@ export class Item {
 				.minutes(8),
 			end: moment(item.date)
 				.hours(8)
-				.minutes(8)
+				.minutes(28)
 		};
 		item.lunch = {
 			start: moment(item.date)
@@ -40,7 +40,7 @@ export class Item {
 				.hours(13)
 				.minutes(33)
 		};
-		item.lunch = {
+		item.dinner = {
 			start: moment(item.date)
 				.hours(20)
 				.minutes(20),
