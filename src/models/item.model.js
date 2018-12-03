@@ -22,6 +22,21 @@ export class Item {
 		};
 	}
 
+	static buildFromRaw(rawObject) {
+		const item = new Item(rawObject.date);
+		item.key = rawObject.key;
+		item.date = rawObject.date;
+		item.breakfast.start = rawObject.breakfast.start;
+		item.breakfast.end = rawObject.breakfast.end;
+		item.lunch.start = rawObject.lunch.start;
+		item.lunch.end = rawObject.lunch.end;
+		item.dinner.start = rawObject.dinner.start;
+		item.dinner.end = rawObject.dinner.end;
+		item.sleep.start = rawObject.sleep.start;
+		item.sleep.end = rawObject.sleep.end;
+		return item;
+	}
+
 	static getTestItem() {
 		const item = new Item('2018-12-03');
 		item.breakfast = {
