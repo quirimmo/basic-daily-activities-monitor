@@ -2,9 +2,9 @@ import * as React from 'react';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import { View, ScrollView } from 'react-native';
-import { Button } from 'react-native-elements';
 import { Item } from '../../models/item.model';
 import { ItemTimeRow } from './item-time-row.presentational';
+import { PrimaryButton } from './primary-button.presentational';
 
 export class AddUpdateItem extends React.Component {
 	constructor(props) {
@@ -79,12 +79,9 @@ export class AddUpdateItem extends React.Component {
 					}
 				/>
 				<View style={{ marginTop: 10, marginBottom: 15 }}>
-					<Button
+					<PrimaryButton
 						title="SAVE ITEM"
-						buttonStyle={{
-							backgroundColor: '#2089dc'
-						}}
-						onPress={this.props.onSubmitItem}
+						onPress={() => this.props.onSubmitItem(this.state.item)}
 					/>
 				</View>
 			</ScrollView>

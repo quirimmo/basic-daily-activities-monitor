@@ -2,8 +2,9 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { View, TimePickerAndroid } from 'react-native';
-import { Text, Button } from 'react-native-elements';
+import { Text } from 'react-native-elements';
 import ItemTimeStyles from '../../styles/item-time.styles';
+import { PrimaryButton } from './primary-button.presentational';
 
 class ItemTime extends React.Component {
 	constructor(props) {
@@ -20,7 +21,7 @@ class ItemTime extends React.Component {
 					</Text>
 				</View>
 				<View style={ItemTimeStyles.changeTimeButtonContainer}>
-					<Button title="Change" onPress={this.onSettingTime} />
+					<PrimaryButton title="Change" onPress={this.onSettingTime} />
 				</View>
 			</View>
 		);

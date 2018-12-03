@@ -26,7 +26,6 @@ export default class App extends React.Component {
 		try {
 			const sqliteProxy = SQLiteProxy.getInstance();
 			await sqliteProxy.createTables();
-			console.log('Database created correctly');
 		} catch (error) {
 			console.error('Error creating the database structure', error);
 		}
