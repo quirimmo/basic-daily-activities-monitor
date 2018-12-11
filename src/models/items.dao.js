@@ -31,15 +31,15 @@ export class ItemsDAO {
 						tx,
 						INSERT_ITEM,
 						[
-							item.date,
-							item.breakfast.start,
-							item.breakfast.end,
-							item.lunch.start,
-							item.lunch.end,
-							item.dinner.start,
-							item.dinner.end,
-							item.sleep.start,
-							item.sleep.end
+							`${item.date}`,
+							`${item.breakfast.start}`,
+							`${item.breakfast.end}`,
+							`${item.lunch.start}`,
+							`${item.lunch.end}`,
+							`${item.dinner.start}`,
+							`${item.dinner.end}`,
+							`${item.sleep.start}`,
+							`${item.sleep.end}`
 						]
 					);
 					resolve(result.insertId.toString());

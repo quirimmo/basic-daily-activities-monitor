@@ -14,9 +14,9 @@ export const INSERT_ITEM = `
 	insert into items
 	(
 		date,
-		breakfast_start_date, breakfast_end_date
-		lunch_start_date, lunch_end_date
-		dinner_start_date, dinner_end_date
+		breakfast_start_date, breakfast_end_date,
+		lunch_start_date, lunch_end_date,
+		dinner_start_date, dinner_end_date,
 		sleep_start_date, sleep_end_date
 	)
 	values

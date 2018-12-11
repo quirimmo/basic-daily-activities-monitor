@@ -5,20 +5,20 @@ export class Item {
 		this.key = undefined;
 		this.date = date;
 		this.sleep = {
-			start: undefined,
-			end: undefined
+			start: moment(),
+			end: moment()
 		};
 		this.breakfast = {
-			start: undefined,
-			end: undefined
+			start: moment(),
+			end: moment()
 		};
 		this.lunch = {
-			start: undefined,
-			end: undefined
+			start: moment(),
+			end: moment()
 		};
 		this.dinner = {
-			start: undefined,
-			end: undefined
+			start: moment(),
+			end: moment()
 		};
 	}
 
@@ -26,14 +26,14 @@ export class Item {
 		const item = new Item(rawObject.date);
 		item.key = rawObject.key;
 		item.date = rawObject.date;
-		item.breakfast.start = rawObject.breakfast.start;
-		item.breakfast.end = rawObject.breakfast.end;
-		item.lunch.start = rawObject.lunch.start;
-		item.lunch.end = rawObject.lunch.end;
-		item.dinner.start = rawObject.dinner.start;
-		item.dinner.end = rawObject.dinner.end;
-		item.sleep.start = rawObject.sleep.start;
-		item.sleep.end = rawObject.sleep.end;
+		item.breakfast.start = rawObject.breakfast_start_date;
+		item.breakfast.end = rawObject.breakfast_end_date;
+		item.lunch.start = rawObject.lunch_start_date;
+		item.lunch.end = rawObject.lunch_end_date;
+		item.dinner.start = rawObject.dinner_start_date;
+		item.dinner.end = rawObject.dinner_end_date;
+		item.sleep.start = rawObject.sleep_start_date;
+		item.sleep.end = rawObject.sleep_end_date;
 		return item;
 	}
 

@@ -1,5 +1,5 @@
+import moment from 'moment';
 import React from 'react';
-// import moment from 'moment';
 import { View } from 'react-native';
 import { Agenda } from 'react-native-calendars';
 import PropTypes from 'prop-types';
@@ -14,10 +14,12 @@ export class CalendarViewScreen extends React.Component {
 
 	defaultItem = Item.getTestItem();
 
+	agendaItems;
+
 	constructor(props) {
 		super(props);
 		this.state = {
-			item: null
+			item: new Item(moment())
 		};
 	}
 
@@ -25,24 +27,27 @@ export class CalendarViewScreen extends React.Component {
 		console.log('updating item:', item);
 	};
 
-	addItem = currItem => {
-		const onSetState = () => this.props.addItem(this.state.item);
-
-		this.setState(
-			{
-				item: Item.buildFromRaw(currItem)
-			},
-			onSetState
-		);
+	addItem = () => {
+		this.props.addItem(this.state.item);
 	};
 
+	getAgendaItems = () => {
+		this.agendaItems = this.props.items.reduce((acc, val) => {
+			acc[val.date] = val;
+			return acc;
+		}, {});
+	};
+
+	componentDidMount() {
+		this.props.fetchItems();
+	}
+
 	render() {
+		console.log('RENDERING');
 		return (
 			<View style={globalStyles.screenContainer}>
 				<Agenda
-					items={{
-						'2018-12-03': [this.defaultItem]
-					}}
+					items={this.agendaItems}
 					onDayPress={day => {
 						this.setState({ item: new Item(day.timestamp) });
 					}}

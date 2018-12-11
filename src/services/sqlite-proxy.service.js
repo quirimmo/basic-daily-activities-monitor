@@ -6,6 +6,7 @@ class SQLiteProxy {
 	static instance = null;
 
 	constructor() {
+		console.log('creating db');
 		this.db = SQLite.openDatabase(FULL_DB_NAME);
 	}
 
