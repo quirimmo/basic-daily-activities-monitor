@@ -71,7 +71,7 @@ export class ItemsDAO {
 					const result = await ItemsDAO.sqliteProxy.executeQuery(
 						tx,
 						DELETE_ITEM,
-						[item.key]
+						[`${item.key}`]
 					);
 					resolve(result);
 				} catch (err) {
@@ -131,15 +131,15 @@ export class ItemsDAO {
 			return async tx => {
 				try {
 					await ItemsDAO.sqliteProxy.executeQuery(tx, UPDATE_ITEM, [
-						item.date,
-						item.breakfast.start,
-						item.breakfast.end,
-						item.lunch.start,
-						item.lunch.end,
-						item.dinner.start,
-						item.dinner.end,
-						item.sleep.start,
-						item.sleep.end,
+						`${item.date}`,
+						`${item.breakfast.start}`,
+						`${item.breakfast.end}`,
+						`${item.lunch.start}`,
+						`${item.lunch.end}`,
+						`${item.dinner.start}`,
+						`${item.dinner.end}`,
+						`${item.sleep.start}`,
+						`${item.sleep.end}`,
 						+item.key
 					]);
 					resolve(item.id);

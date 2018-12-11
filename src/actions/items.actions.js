@@ -17,3 +17,10 @@ export const updateItem = item => ({
 	type: UPDATE_ITEM,
 	payload: item
 });
+
+export const DELETE_ITEM = 'DELETE_ITEM';
+export const ITEM_DELETED = 'ITEM_DELETED';
+export const deleteItem = item => ({
+	type: DELETE_ITEM,
+	payload: item
+});

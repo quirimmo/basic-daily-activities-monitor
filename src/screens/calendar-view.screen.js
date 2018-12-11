@@ -43,7 +43,6 @@ export class CalendarViewScreen extends React.Component {
 	}
 
 	render() {
-		console.log('RENDERING');
 		return (
 			<View style={globalStyles.screenContainer}>
 				<Agenda
