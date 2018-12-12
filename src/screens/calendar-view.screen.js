@@ -1,76 +1,131 @@
 import moment from 'moment';
 import React from 'react';
 import { View } from 'react-native';
+import { Text } from 'react-native-elements';
 import { Agenda } from 'react-native-calendars';
-import PropTypes from 'prop-types';
 import globalStyles from '../styles/global.styles';
-import { AddUpdateItem } from '../components/presentationals/add-update-item.presentational';
-import { Item } from '../models/item.model';
+
+const items = {
+	// '2018-12-10': [{ test: 'I am the first test' }],
+	// '2018-12-11': [{ test: 'I am the second test' }],
+	// '2018-12-13': [{ test: 'I am the third test' }],
+	// '2018-12-15': [{ test: 'I am the last test' }]
+};
 
 export class CalendarViewScreen extends React.Component {
 	static navigationOptions = {
 		title: 'Calendar View'
 	};
 
-	defaultItem = Item.getTestItem();
-
-	agendaItems;
-
 	constructor(props) {
 		super(props);
 		this.state = {
-			item: new Item(moment())
+			currentDay: moment()
 		};
 	}
 
-	updateItem = item => {
-		console.log('updating item:', item);
+	onDayPress = day => {
+		this.setState({ currentDay: moment(day.timestamp) });
 	};
 
-	addItem = () => {
-		this.props.addItem(this.state.item);
+	onRenderItem = item => {
+		console.log('current item:', item);
+		return <Text>Current Item: {JSON.stringify(item)}</Text>;
 	};
 
-	getAgendaItems = () => {
-		this.agendaItems = this.props.items.reduce((acc, val) => {
-			acc[val.date] = val;
-			return acc;
-		}, {});
+	onRenderEmptyData = () => {
+		console.log('empty data:');
+		return (
+			<Text>Current Day: {this.state.currentDay.format('YYYY-MM-DD')}</Text>
+		);
 	};
-
-	componentDidMount() {
-		this.props.fetchItems();
-	}
 
 	render() {
 		return (
 			<View style={globalStyles.screenContainer}>
 				<Agenda
-					items={this.agendaItems}
-					onDayPress={day => {
-						this.setState({ item: new Item(day.timestamp) });
-					}}
-					renderEmptyData={() => (
-						<AddUpdateItem
-							item={this.state.item}
-							onSubmitItem={item => this.addItem(item)}
-						/>
-					)}
-					renderDay={() => null}
-					renderItem={item => (
-						<AddUpdateItem
-							item={item}
-							onSubmitItem={currItem => this.updateItem(currItem)}
-						/>
-					)}
-					rowHasChanged={(r1, r2) => r1.key !== r2.key}
+					items={items}
+					onDayPress={this.onDayPress}
+					renderEmptyData={this.onRenderEmptyData}
+					renderItem={this.onRenderItem}
 				/>
 			</View>
 		);
 	}
 }
 
-CalendarViewScreen.propTypes = {
-	items: PropTypes.arrayOf(PropTypes.instanceOf(Item)),
-	addItem: PropTypes.func
-};
+// import moment from 'moment';
+// import React from 'react';
+// import { View } from 'react-native';
+// import { Agenda } from 'react-native-calendars';
+// import PropTypes from 'prop-types';
+// import globalStyles from '../styles/global.styles';
+// import { AddUpdateItem } from '../components/presentationals/add-update-item.presentational';
+// import { Item } from '../models/item.model';
+
+// export class CalendarViewScreen extends React.Component {
+// 	static navigationOptions = {
+// 		title: 'Calendar View'
+// 	};
+
+// 	agendaItems;
+
+// 	constructor(props) {
+// 		super(props);
+// 		this.state = {
+// 			item: new Item(moment())
+// 		};
+// 	}
+
+// 	updateItem = item => {
+// 		console.log('updating item:', item);
+// 	};
+
+// 	addItem = () => {
+// 		this.props.addItem(this.state.item);
+// 	};
+
+// 	getAgendaItems = () => {
+// 		this.agendaItems = this.props.items.reduce((acc, val) => {
+// 			acc[val.date] = val;
+// 			return acc;
+// 		}, {});
+// 	};
+
+// 	componentDidMount() {
+// 		this.props.fetchItems();
+// 	}
+
+// 	render() {
+// 		console.log('calendar view screen rendering');
+// 		return (
+// 			<View style={globalStyles.screenContainer}>
+// 				<Agenda
+// 					items={{}}
+// 					onDayPress={day => {
+// 						this.setState({ item: new Item(day.timestamp) });
+// 					}}
+// 					renderEmptyData={() => (
+// 						<AddUpdateItem
+// 							item={this.state.item}
+// 							onSubmitItem={item => this.addItem(item)}
+// 						/>
+// 					)}
+// 					renderItem={item => (
+// 						<AddUpdateItem
+// 							item={item}
+// 							onSubmitItem={currItem => this.updateItem(currItem)}
+// 						/>
+// 					)}
+// 					rowHasChanged={(r1, r2) => r1.key !== r2.key}
+// 					renderDay={() => null}
+// 				/>
+// 			</View>
+// 		);
+// 	}
+// }
+
+// CalendarViewScreen.propTypes = {
+// 	items: PropTypes.arrayOf(PropTypes.instanceOf(Item)),
+// 	addItem: PropTypes.func
+// };

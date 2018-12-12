@@ -8,7 +8,7 @@ import SQLiteProxy from './src/services/sqlite-proxy.service';
 import { reducers } from './src/reducers/reducers';
 import { mySaga } from './src/sagas/sagas';
 import globalStyles from './src/styles/global.styles';
-import { AppSwitchNavigator } from './src/navigation/app-switch.navigator';
+import { CalendarViewContainer } from './src/components/containers/calendar-view.container';
 
 const sagaMiddleware = createSagaMiddleware();
 const store = createStore(reducers, applyMiddleware(sagaMiddleware));
@@ -49,7 +49,7 @@ export default class App extends React.Component {
 			<Provider store={store}>
 				<View style={globalStyles.mainContainer}>
 					{Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-					<AppSwitchNavigator />
+					<CalendarViewContainer />
 				</View>
 			</Provider>
 		);
