@@ -2,11 +2,10 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { View, TimePickerAndroid } from 'react-native';
-import { Text } from 'react-native-elements';
+import { Text, Icon } from 'react-native-elements';
 import ItemTimeStyles from '../../styles/item-time.styles';
-import { PrimaryButton } from './primary-button.presentational';
 
-class ItemTime extends React.Component {
+class ItemTime extends React.PureComponent {
 	constructor(props) {
 		super(props);
 		this.onSettingTime = this.onSettingTime.bind(this);
@@ -14,14 +13,26 @@ class ItemTime extends React.Component {
 
 	render() {
 		return (
-			<View style={{ alignItems: 'center', justifyContent: 'center' }}>
+			<View
+				style={{
+					alignItems: 'center',
+					justifyContent: 'center',
+					flexDirection: 'row'
+				}}
+			>
 				<View>
 					<Text style={ItemTimeStyles.currentTimeText}>
 						{moment(this.props.date).format('HH:mm')}
 					</Text>
 				</View>
 				<View style={ItemTimeStyles.changeTimeButtonContainer}>
-					<PrimaryButton title="Change" onPress={this.onSettingTime} />
+					<Icon
+						raised
+						name="clock-o"
+						color="#2f95dc"
+						type="font-awesome"
+						onPress={this.onSettingTime}
+					/>
 				</View>
 			</View>
 		);

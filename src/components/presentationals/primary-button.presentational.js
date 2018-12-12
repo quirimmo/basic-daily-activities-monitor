@@ -2,7 +2,7 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'react-native-elements';
 
-export class PrimaryButton extends React.Component {
+export class PrimaryButton extends React.PureComponent {
 	constructor(props) {
 		super(props);
 	}

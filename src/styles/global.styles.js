@@ -9,6 +9,7 @@ export default StyleSheet.create({
 	screenContainer: {
 		flex: 1,
 		backgroundColor: colorsStyles.baseBackground,
+		paddingTop: 20,
 		padding: 10
 	},
 	label: {
