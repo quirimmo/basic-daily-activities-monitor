@@ -1,41 +1,43 @@
 import * as React from 'react';
 import moment from 'moment';
-import { TimePickerAndroid, TouchableWithoutFeedback } from 'react-native';
+import { TimePickerAndroid } from 'react-native';
+import { Icon } from 'react-native-elements';
 
 class TimeSelector extends React.PureComponent {
 	constructor(props) {
 		super(props);
-		this.state = {
-			selectedTime: {
-				hour: null,
-				minute: null
-			}
-		};
 		this.onSettingTime = this.onSettingTime.bind(this);
 	}
 
 	render() {
 		return (
-			<TouchableWithoutFeedback onPress={this.onSettingTime}>
-				{this.props.children(this.state.selectedTime)}
-			</TouchableWithoutFeedback>
+			<Icon
+				raised
+				name="clock-o"
+				color="#2f95dc"
+				type="font-awesome"
+				onPress={this.onSettingTime}
+			/>
 		);
 	}
 
 	async onSettingTime() {
+		const hours = this.props.date
+			? moment(this.props.date).hours()
+			: moment().hours();
+		const minutes = this.props.date
+			? moment(this.props.date).minutes()
+			: moment().minutes();
+
 		try {
 			const { action, hour, minute } = await TimePickerAndroid.open({
-				hour: moment(this.props.date).hours(),
-				minute: moment(this.props.date).minutes(),
+				hour: hours,
+				minute: minutes,
 				is24Hour: true
 			});
+
 			if (action !== TimePickerAndroid.dismissedAction) {
-				this.setState({
-					selectedTime: {
-						hour,
-						minute
-					}
-				});
+				this.props.onSetTime({ hour, minute });
 			}
 		} catch ({ code, message }) {
 			console.error('Cannot open time picker', message);

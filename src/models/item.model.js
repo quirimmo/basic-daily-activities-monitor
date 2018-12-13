@@ -1,24 +1,22 @@
-import moment from 'moment';
-
 export class Item {
 	constructor(date) {
-		this.key = undefined;
+		this.key = null;
 		this.date = date;
 		this.sleep = {
-			start: moment(),
-			end: moment()
+			start: null,
+			end: null
 		};
 		this.breakfast = {
-			start: moment(),
-			end: moment()
+			start: null,
+			end: null
 		};
 		this.lunch = {
-			start: moment(),
-			end: moment()
+			start: null,
+			end: null
 		};
 		this.dinner = {
-			start: moment(),
-			end: moment()
+			start: null,
+			end: null
 		};
 	}
 
