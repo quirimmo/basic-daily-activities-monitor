@@ -1,10 +1,12 @@
 import moment from 'moment';
 import React from 'react';
 import { View } from 'react-native';
+import { Button } from 'react-native-elements';
 import CalendarPicker from 'react-native-calendar-picker';
 import globalStyles from '../styles/global.styles';
 import DayDataLoader from '../components/presentationals/day-data-loader.presentational';
 import { ManageDailyItem } from '../components/presentationals/manage-daily-item.presentational';
+import { Item } from '../models/item.model';
 
 export class CalendarViewScreen extends React.Component {
 	static navigationOptions = { title: 'Calendar View' };
@@ -21,13 +23,14 @@ export class CalendarViewScreen extends React.Component {
 	}
 
 	buildState = item => {
-		const obj = {};
+		const obj = {
+			key: item ? item.key : null
+		};
 		if (!item) {
 			obj.currentDay = moment();
 		}
 		CalendarViewScreen.configuration.forEach(el => {
 			obj[el] = {};
-			obj[el].key = item ? item[el].key : null;
 			obj[el].start = item ? item[el].start : null;
 			obj[el].end = item ? item[el].end : null;
 		});
@@ -39,8 +42,8 @@ export class CalendarViewScreen extends React.Component {
 		const item = await this.props.getItem();
 		if (item) {
 			this.setState(this.buildState(item));
-			this.props.stopLoading();
 		}
+		this.props.stopLoading();
 	};
 
 	onDateChange = date => {
@@ -63,8 +66,32 @@ export class CalendarViewScreen extends React.Component {
 		}
 	};
 
+	onSaveItem = () => {
+		const item = new Item(this.state.currentDay);
+		item.initTimes(
+			this.state.breakfast,
+			this.state.lunch,
+			this.state.dinner,
+			this.state.sleep
+		);
+		if (this.state.key) {
+			item.key = this.state.key;
+			console.log('updating item', item);
+		} else {
+			console.log('adding item:', item);
+		}
+	};
+
+	isSaveDisabled = () => {
+		if (this.state.key) {
+			return false;
+		}
+		return !CalendarViewScreen.configuration.every(
+			el => this.state[el].start && this.state[el].end
+		);
+	};
+
 	render() {
-		console.log('Current day:', this.state.currentDay.format('YYYY-MM-DD'));
 		return this.props.isLoading ? (
 			<DayDataLoader />
 		) : (
@@ -77,15 +104,28 @@ export class CalendarViewScreen extends React.Component {
 					onDateChange={this.onDateChange}
 					maxDate={moment()}
 				/>
-				<View>
-					<ManageDailyItem
-						configuration={CalendarViewScreen.configuration}
-						breakfast={this.state.breakfast}
-						lunch={this.state.lunch}
-						dinner={this.state.dinner}
-						sleep={this.state.sleep}
-						onSetStartTime={this.setTime}
-						onSetEndTime={this.setTime}
+				<ManageDailyItem
+					configuration={CalendarViewScreen.configuration}
+					breakfast={this.state.breakfast}
+					lunch={this.state.lunch}
+					dinner={this.state.dinner}
+					sleep={this.state.sleep}
+					onSetStartTime={this.setTime}
+					onSetEndTime={this.setTime}
+				/>
+				<View
+					style={{
+						flex: 1,
+						justifyContent: 'flex-end'
+					}}
+				>
+					<Button
+						backgroundColor="#2f95dc"
+						raised
+						icon={{ name: 'save' }}
+						title="SAVE ITEM"
+						onPress={this.onSaveItem}
+						disabled={this.isSaveDisabled()}
 					/>
 				</View>
 			</View>

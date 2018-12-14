@@ -2,22 +2,14 @@ export class Item {
 	constructor(date) {
 		this.key = null;
 		this.date = date;
-		this.sleep = {
-			start: null,
-			end: null
-		};
-		this.breakfast = {
-			start: null,
-			end: null
-		};
-		this.lunch = {
-			start: null,
-			end: null
-		};
-		this.dinner = {
-			start: null,
-			end: null
-		};
+		this.initTimes();
+	}
+
+	initTimes(breakfast, lunch, dinner, sleep) {
+		this.breakfast = breakfast || { start: null, end: null };
+		this.lunch = lunch || { start: null, end: null };
+		this.dinner = dinner || { start: null, end: null };
+		this.sleep = sleep || { start: null, end: null };
 	}
 
 	static buildFromRaw(rawObject) {
