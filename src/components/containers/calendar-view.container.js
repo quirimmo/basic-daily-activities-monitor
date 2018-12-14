@@ -12,6 +12,24 @@ mockedItem.breakfast.start = moment()
 mockedItem.breakfast.end = moment()
 	.hours(8)
 	.minutes(28);
+mockedItem.lunch.start = moment()
+	.hours(13)
+	.minutes(13);
+mockedItem.lunch.end = moment()
+	.hours(13)
+	.minutes(33);
+mockedItem.dinner.start = moment()
+	.hours(20)
+	.minutes(20);
+mockedItem.dinner.end = moment()
+	.hours(20)
+	.minutes(40);
+mockedItem.sleep.start = moment()
+	.hours(1)
+	.minutes(0);
+mockedItem.sleep.end = moment()
+	.hours(8)
+	.minutes(0);
 
 const mapStateToProps = state => ({
 	items: state.items,

@@ -1,6 +1,15 @@
 import React from 'react';
 import { View, Image } from 'react-native';
 
+const imgLoader = require('../../../assets/images/animated-loading.gif');
+
+const dayDataLoaderContainerStyle = {
+	flex: 1,
+	backgroundColor: 'white',
+	justifyContent: 'center',
+	alignItems: 'center'
+};
+
 export default class DayDataLoader extends React.PureComponent {
 	constructor(props) {
 		super(props);
@@ -8,15 +17,8 @@ export default class DayDataLoader extends React.PureComponent {
 
 	render() {
 		return (
-			<View
-				style={{
-					flex: 1,
-					backgroundColor: 'white',
-					justifyContent: 'center',
-					alignItems: 'center'
-				}}
-			>
-				<Image source={this.props.imgLoader} />
+			<View style={dayDataLoaderContainerStyle}>
+				<Image source={imgLoader} />
 			</View>
 		);
 	}

@@ -1,115 +1,94 @@
 import moment from 'moment';
 import React from 'react';
 import { View } from 'react-native';
-import { Text } from 'react-native-elements';
 import CalendarPicker from 'react-native-calendar-picker';
 import globalStyles from '../styles/global.styles';
-import StartEndTime from '../components/presentationals/start-end-time.presentational';
 import DayDataLoader from '../components/presentationals/day-data-loader.presentational';
-
-const imgLoader = require('../../assets/images/animated-loading.gif');
+import { ManageDailyItem } from '../components/presentationals/manage-daily-item.presentational';
 
 export class CalendarViewScreen extends React.Component {
-	static navigationOptions = {
-		title: 'Calendar View'
-	};
+	static navigationOptions = { title: 'Calendar View' };
+
+	static configuration = ['breakfast', 'lunch', 'dinner', 'sleep'];
 
 	constructor(props) {
 		super(props);
-		this.state = {
-			currentDay: moment(),
-			breakfast: {
-				start: null,
-				end: null
-			}
-		};
+		this.state = this.buildState();
 	}
 
-	async componentDidMount() {
+	componentDidMount() {
+		this.retrieveItem();
+	}
+
+	buildState = item => {
+		const obj = {};
+		if (!item) {
+			obj.currentDay = moment();
+		}
+		CalendarViewScreen.configuration.forEach(el => {
+			obj[el] = {};
+			obj[el].key = item ? item[el].key : null;
+			obj[el].start = item ? item[el].start : null;
+			obj[el].end = item ? item[el].end : null;
+		});
+		return obj;
+	};
+
+	retrieveItem = async () => {
 		this.props.startLoading();
 		const item = await this.props.getItem();
 		if (item) {
-			this.setState({
-				breakfast: {
-					start: item.breakfast.start,
-					end: item.breakfast.end
-				}
-			});
+			this.setState(this.buildState(item));
 			this.props.stopLoading();
 		}
-	}
+	};
 
 	onDateChange = date => {
+		this.retrieveItem();
 		this.setState({
-			currentDay: moment(date),
-			breakfast: { start: null, end: null }
+			currentDay: moment(date)
 		});
 	};
 
-	onSetBreakfastStartTime = ({ hour, minute }) => {
-		this.setStartTime('breakfast', hour, minute);
-	};
-
-	onSetBreakfastEndTime = ({ hour, minute }) => {
-		this.setEndTime('breakfast', hour, minute);
-	};
-
-	setStartTime = (property, hour, minute) => {
+	setTime = (property, period, { hour, minute }) => {
 		if (hour && minute) {
 			this.setState(prevState => ({
 				[property]: {
-					start: moment()
+					...prevState[property],
+					[period]: moment()
 						.hours(hour)
-						.minutes(minute),
-					end: prevState[property].end
-				}
-			}));
-		}
-	};
-
-	setEndTime = (property, hour, minute) => {
-		if (hour && minute) {
-			this.setState(prevState => ({
-				[property]: {
-					end: moment()
-						.hours(hour)
-						.minutes(minute),
-					start: prevState[property].start
+						.minutes(minute)
 				}
 			}));
 		}
 	};
 
 	render() {
-		let content;
-		if (this.props.isLoading) {
-			content = <DayDataLoader imgLoader={imgLoader} />;
-		} else {
-			content = (
-				<View style={globalStyles.screenContainer}>
-					<CalendarPicker
-						selectedDayColor="#2f95dc"
-						selectedDayTextColor="#fff"
-						selectedStartDate={this.state.currentDay}
-						startFromMonday={true}
-						onDateChange={this.onDateChange}
-						maxDate={moment()}
+		console.log('Current day:', this.state.currentDay.format('YYYY-MM-DD'));
+		return this.props.isLoading ? (
+			<DayDataLoader />
+		) : (
+			<View style={globalStyles.screenContainer}>
+				<CalendarPicker
+					selectedDayColor="#2f95dc"
+					selectedDayTextColor="#fff"
+					selectedStartDate={this.state.currentDay}
+					startFromMonday={true}
+					onDateChange={this.onDateChange}
+					maxDate={moment()}
+				/>
+				<View>
+					<ManageDailyItem
+						configuration={CalendarViewScreen.configuration}
+						breakfast={this.state.breakfast}
+						lunch={this.state.lunch}
+						dinner={this.state.dinner}
+						sleep={this.state.sleep}
+						onSetStartTime={this.setTime}
+						onSetEndTime={this.setTime}
 					/>
-					<View>
-						<Text>
-							Current day: {this.state.currentDay.format('YYYY-MM-DD')}
-						</Text>
-						<StartEndTime
-							title="breakfast"
-							startDate={this.state.breakfast.start}
-							endDate={this.state.breakfast.end}
-							onSetStartTime={this.onSetBreakfastStartTime}
-							onSetEndTime={this.onSetBreakfastEndTime}
-						/>
-					</View>
 				</View>
-			);
-		}
-		return <React.Fragment>{content}</React.Fragment>;
+			</View>
+		);
 	}
 }

@@ -16,6 +16,7 @@ class TimeSelector extends React.PureComponent {
 				name="clock-o"
 				color="#2f95dc"
 				type="font-awesome"
+				size={20}
 				onPress={this.onSettingTime}
 			/>
 		);
