@@ -11,6 +11,13 @@ export const fetchItems = () => ({
 	type: FETCH_ITEMS
 });
 
+export const FETCH_ITEM = 'FETCH_ITEM';
+export const ITEM_FETCHED = 'ITEM_FETCHED';
+export const fetchItemByDate = itemDate => ({
+	type: FETCH_ITEM,
+	payload: itemDate
+});
+
 export const UPDATE_ITEM = 'UPDATE_ITEM';
 export const ITEM_UPDATED = 'ITEM_UPDATED';
 export const updateItem = item => ({

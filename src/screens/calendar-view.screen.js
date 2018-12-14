@@ -20,11 +20,19 @@ export class CalendarViewScreen extends React.Component {
 
 	componentDidMount() {
 		this.retrieveItem();
-		this.props.fetchItems();
 	}
 
 	componentDidUpdate() {
-		console.log('current items', this.props.items);
+		if (this.props.items.length) {
+			console.log('fetched items:', this.props.items);
+			const item = this.props.items.find(
+				el => el.date === moment().format('YYYY-MM-DD')
+			);
+			if (item) {
+				console.log('fetched item:', item);
+				// this.setState(this.buildState(item));
+			}
+		}
 	}
 
 	buildState = item => {
@@ -36,18 +44,23 @@ export class CalendarViewScreen extends React.Component {
 		}
 		CalendarViewScreen.configuration.forEach(el => {
 			obj[el] = {};
-			obj[el].start = item ? item[el].start : null;
-			obj[el].end = item ? item[el].end : null;
+			obj[el].start = item ? moment(item[el].start) : null;
+			obj[el].end = item ? moment(item[el].end) : null;
 		});
 		return obj;
 	};
 
 	retrieveItem = async () => {
 		this.props.startLoading();
-		const item = await this.props.getItem();
-		if (item) {
-			this.setState(this.buildState(item));
-		}
+		await this.props.fetchItemByDate(moment().format('YYYY-MM-DD'));
+		// console.log('fetching item with date:', moment().format('YYYY-MM-DD'));
+		// const item = await this.props.fetchItemByDate(
+		// 	moment().format('YYYY-MM-DD')
+		// );
+		// console.log('fetched item:', item);
+		// if (item) {
+		// 	this.setState(this.buildState(item));
+		// }
 		this.props.stopLoading();
 	};
 

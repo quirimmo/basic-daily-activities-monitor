@@ -7,7 +7,9 @@ import {
 	ITEMS_FETCHED,
 	ITEM_UPDATED,
 	DELETE_ITEM,
-	ITEM_DELETED
+	ITEM_DELETED,
+	FETCH_ITEM,
+	ITEM_FETCHED
 } from '../actions/items.actions';
 import { ItemsDAO } from '../models/items.dao';
 import { Item } from '../models/item.model';
@@ -31,6 +33,14 @@ function* fetchItems() {
 	yield put({ type: ITEMS_FETCHED, payload: items });
 }
 
+function* fetchItemByDate(fetchItemByDateAction) {
+	// manage with try catch! and dispathc error action
+	const item = yield ItemsDAO.fetchItemByDate(
+		fetchItemByDateAction.payload
+	).then(fetchedItem => Item.buildFromRaw(fetchedItem[0]), onError);
+	yield put({ type: ITEM_FETCHED, payload: item });
+}
+
 function* updateItem(updateItemAction) {
 	// manage with try catch! and dispathc error action
 	yield ItemsDAO.updateItem(updateItemAction.payload).then(() => {}, onError);
@@ -48,6 +58,7 @@ export function* itemsActionWatcher() {
 	yield takeLatest(UPDATE_ITEM, updateItem);
 	yield takeLatest(DELETE_ITEM, deleteItem);
 	yield takeLatest(FETCH_ITEMS, fetchItems);
+	yield takeLatest(FETCH_ITEM, fetchItemByDate);
 }
 
 function onError(err) {

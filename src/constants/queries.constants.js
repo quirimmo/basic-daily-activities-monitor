@@ -31,7 +31,8 @@ export const SELECT_ITEMS = `
 export const SELECT_ITEM = `
 	select rowid as key, *
 	from items
-	where id = ?;
+	where date = ?
+	LIMIT 1;
 `;
 
 export const DELETE_ITEM = `

@@ -3,7 +3,8 @@ import {
 	INSERT_ITEM,
 	SELECT_ITEMS,
 	DELETE_ITEM,
-	UPDATE_ITEM
+	UPDATE_ITEM,
+	SELECT_ITEM
 } from '../constants/queries.constants';
 
 export class ItemsDAO {
@@ -109,6 +110,41 @@ export class ItemsDAO {
 					);
 				} catch (err) {
 					reject(`Error selecting the items ${err}`);
+				}
+			};
+		}
+	}
+
+	static async fetchItemByDate(itemDate) {
+		console.log('fetching item by date:', itemDate);
+		return new Promise((resolve, reject) => {
+			try {
+				ItemsDAO.sqliteProxy.executeTransaction(getTransition(resolve, reject));
+			} catch (error) {
+				reject(
+					new Error(
+						`Error executing the transaction for fetching the item with date ${itemDate}: ${error}`
+					)
+				);
+			}
+		});
+
+		function getTransition(resolve, reject) {
+			return async tx => {
+				try {
+					const result = await ItemsDAO.sqliteProxy.executeQuery(
+						tx,
+						SELECT_ITEM,
+						[`${itemDate}`]
+					);
+					resolve(
+						result.rows._array.map(el => {
+							el.key = el.key.toString();
+							return el;
+						})
+					);
+				} catch (err) {
+					reject(`Error selecting the item with date ${itemDate}: ${err}`);
 				}
 			};
 		}

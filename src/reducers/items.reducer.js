@@ -2,7 +2,8 @@ import {
 	ITEM_ADDED,
 	ITEMS_FETCHED,
 	ITEM_UPDATED,
-	ITEM_DELETED
+	ITEM_DELETED,
+	ITEM_FETCHED
 } from '../actions/items.actions';
 
 export const items = (state = [], action) => {
@@ -11,6 +12,8 @@ export const items = (state = [], action) => {
 			return state.concat(action.payload);
 		case ITEMS_FETCHED:
 			return action.payload;
+		case ITEM_FETCHED:
+			return state.concat(action.payload);
 		case ITEM_DELETED:
 			return state.filter(item => item.key !== action.payload.key);
 		case ITEM_UPDATED:

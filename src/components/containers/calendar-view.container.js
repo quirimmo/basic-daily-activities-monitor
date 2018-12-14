@@ -1,7 +1,12 @@
 import moment from 'moment';
 import { connect } from 'react-redux';
 import { CalendarViewScreen } from '../../screens/calendar-view.screen';
-import { addItem, updateItem, fetchItems } from '../../actions/items.actions';
+import {
+	addItem,
+	updateItem,
+	fetchItems,
+	fetchItemByDate
+} from '../../actions/items.actions';
 import { Item } from '../../models/item.model';
 import { startLoading, stopLoading } from '../../actions/loading.actions';
 
@@ -48,6 +53,7 @@ const mapDispatchToProps = dispatch => ({
 	addItem: item => dispatch(addItem(item)),
 	updateItem: item => dispatch(updateItem(item)),
 	fetchItems: () => dispatch(fetchItems()),
+	fetchItemByDate: itemDate => dispatch(fetchItemByDate(itemDate)),
 	startLoading: () => dispatch(startLoading()),
 	stopLoading: () => dispatch(stopLoading())
 });
