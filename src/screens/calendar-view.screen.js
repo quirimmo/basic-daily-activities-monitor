@@ -20,6 +20,11 @@ export class CalendarViewScreen extends React.Component {
 
 	componentDidMount() {
 		this.retrieveItem();
+		this.props.fetchItems();
+	}
+
+	componentDidUpdate() {
+		console.log('current items', this.props.items);
 	}
 
 	buildState = item => {
@@ -27,7 +32,7 @@ export class CalendarViewScreen extends React.Component {
 			key: item ? item.key : null
 		};
 		if (!item) {
-			obj.currentDay = moment();
+			obj.currentDay = moment().format('YYYY-MM-DD');
 		}
 		CalendarViewScreen.configuration.forEach(el => {
 			obj[el] = {};
@@ -49,7 +54,7 @@ export class CalendarViewScreen extends React.Component {
 	onDateChange = date => {
 		this.retrieveItem();
 		this.setState({
-			currentDay: moment(date)
+			currentDay: moment(date).format('YYYY-MM-DD')
 		});
 	};
 
@@ -74,11 +79,16 @@ export class CalendarViewScreen extends React.Component {
 			this.state.dinner,
 			this.state.sleep
 		);
-		if (this.state.key) {
-			item.key = this.state.key;
-			console.log('updating item', item);
-		} else {
-			console.log('adding item:', item);
+		try {
+			if (this.state.key) {
+				item.key = this.state.key;
+				this.props.updateItem(item);
+			} else {
+				this.props.addItem(item);
+			}
+			console.log('Item saved correctly');
+		} catch (error) {
+			console.error('Error saving the item:', item, 'Error:', error);
 		}
 	};
 

@@ -5,7 +5,7 @@ import { addItem, updateItem, fetchItems } from '../../actions/items.actions';
 import { Item } from '../../models/item.model';
 import { startLoading, stopLoading } from '../../actions/loading.actions';
 
-const mockedItem = new Item(moment());
+const mockedItem = new Item(moment().format('YYYY-MM-DD'));
 mockedItem.key = 'i am a key';
 mockedItem.breakfast.start = moment()
 	.hours(8)
@@ -41,8 +41,8 @@ const mapDispatchToProps = dispatch => ({
 	getItem: () =>
 		new Promise(resolve => {
 			setTimeout(() => {
-				// resolve(undefined);
-				resolve(mockedItem);
+				resolve(undefined);
+				// resolve(mockedItem);
 			}, 2000);
 		}),
 	addItem: item => dispatch(addItem(item)),

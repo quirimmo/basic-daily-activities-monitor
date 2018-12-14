@@ -28,6 +28,12 @@ export const SELECT_ITEMS = `
 	from items;
 `;
 
+export const SELECT_ITEM = `
+	select rowid as key, *
+	from items
+	where id = ?;
+`;
+
 export const DELETE_ITEM = `
 	delete
 	from items
