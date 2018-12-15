@@ -116,7 +116,6 @@ export class ItemsDAO {
 	}
 
 	static async fetchItemByDate(itemDate) {
-		console.log('fetching item by date:', itemDate);
 		return new Promise((resolve, reject) => {
 			try {
 				ItemsDAO.sqliteProxy.executeTransaction(getTransition(resolve, reject));

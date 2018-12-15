@@ -15,64 +15,54 @@ export class CalendarViewScreen extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.state = this.buildState();
+		this.state = {
+			key: null,
+			currentDay: moment().format('YYYY-MM-DD'),
+			breakfast: { start: null, end: null },
+			lunch: { start: null, end: null },
+			dinner: { start: null, end: null },
+			sleep: { start: null, end: null }
+		};
 	}
 
 	componentDidMount() {
-		this.retrieveItem();
+		this.props.fetchItemByDate(this.state.currentDay);
 	}
 
 	componentDidUpdate() {
-		if (this.props.items.length) {
-			console.log('fetched items:', this.props.items);
+		if (this.props.items.length && !this.state.key) {
 			const item = this.props.items.find(
-				el => el.date === moment().format('YYYY-MM-DD')
+				el => el.date === this.state.currentDay
 			);
 			if (item) {
-				console.log('fetched item:', item);
-				// this.setState(this.buildState(item));
+				this.setState({
+					key: item.key,
+					currentDay: item.date,
+					breakfast: { start: item.breakfast.start, end: item.breakfast.end },
+					lunch: { start: item.lunch.start, end: item.lunch.end },
+					dinner: { start: item.dinner.start, end: item.dinner.end },
+					sleep: { start: item.sleep.start, end: item.sleep.end }
+				});
 			}
 		}
 	}
 
-	buildState = item => {
-		const obj = {
-			key: item ? item.key : null
-		};
-		if (!item) {
-			obj.currentDay = moment().format('YYYY-MM-DD');
-		}
-		CalendarViewScreen.configuration.forEach(el => {
-			obj[el] = {};
-			obj[el].start = item ? moment(item[el].start) : null;
-			obj[el].end = item ? moment(item[el].end) : null;
-		});
-		return obj;
-	};
-
-	retrieveItem = async () => {
-		this.props.startLoading();
-		await this.props.fetchItemByDate(moment().format('YYYY-MM-DD'));
-		// console.log('fetching item with date:', moment().format('YYYY-MM-DD'));
-		// const item = await this.props.fetchItemByDate(
-		// 	moment().format('YYYY-MM-DD')
-		// );
-		// console.log('fetched item:', item);
-		// if (item) {
-		// 	this.setState(this.buildState(item));
-		// }
-		this.props.stopLoading();
-	};
-
 	onDateChange = date => {
-		this.retrieveItem();
-		this.setState({
-			currentDay: moment(date).format('YYYY-MM-DD')
-		});
+		this.setState(
+			{
+				key: null,
+				currentDay: moment(date).format('YYYY-MM-DD'),
+				breakfast: { start: null, end: null },
+				lunch: { start: null, end: null },
+				dinner: { start: null, end: null },
+				sleep: { start: null, end: null }
+			},
+			() => this.props.fetchItemByDate(moment(date).format('YYYY-MM-DD'))
+		);
 	};
 
 	setTime = (property, period, { hour, minute }) => {
-		if (hour && minute) {
+		if (typeof hour !== 'undefined' && typeof minute !== 'undefined') {
 			this.setState(prevState => ({
 				[property]: {
 					...prevState[property],

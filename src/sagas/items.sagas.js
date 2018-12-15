@@ -13,15 +13,18 @@ import {
 } from '../actions/items.actions';
 import { ItemsDAO } from '../models/items.dao';
 import { Item } from '../models/item.model';
+import { START_LOADING, STOP_LOADING } from '../actions/loading.actions';
 
 function* addItem(addItemAction) {
 	// manage with try catch! and dispathc error action
+	yield put({ type: START_LOADING });
 	const insertedID = yield ItemsDAO.addItem(addItemAction.payload).then(
 		id => id,
 		onError
 	);
 	addItemAction.payload.key = insertedID;
 	yield put({ type: ITEM_ADDED, payload: addItemAction.payload });
+	yield put({ type: STOP_LOADING });
 }
 
 function* fetchItems() {
@@ -35,10 +38,19 @@ function* fetchItems() {
 
 function* fetchItemByDate(fetchItemByDateAction) {
 	// manage with try catch! and dispathc error action
+	yield put({ type: START_LOADING });
 	const item = yield ItemsDAO.fetchItemByDate(
 		fetchItemByDateAction.payload
-	).then(fetchedItem => Item.buildFromRaw(fetchedItem[0]), onError);
-	yield put({ type: ITEM_FETCHED, payload: item });
+	).then(fetchedItem => {
+		if (fetchedItem.length) {
+			return Item.buildFromRaw(fetchedItem[0]);
+		}
+		return null;
+	}, onError);
+	if (item) {
+		yield put({ type: ITEM_FETCHED, payload: item });
+	}
+	yield put({ type: STOP_LOADING });
 }
 
 function* updateItem(updateItemAction) {

@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 export class Item {
 	constructor(date) {
 		this.key = null;
@@ -16,14 +18,14 @@ export class Item {
 		const item = new Item(rawObject.date);
 		item.key = rawObject.key;
 		item.date = rawObject.date;
-		item.breakfast.start = rawObject.breakfast_start_date;
-		item.breakfast.end = rawObject.breakfast_end_date;
-		item.lunch.start = rawObject.lunch_start_date;
-		item.lunch.end = rawObject.lunch_end_date;
-		item.dinner.start = rawObject.dinner_start_date;
-		item.dinner.end = rawObject.dinner_end_date;
-		item.sleep.start = rawObject.sleep_start_date;
-		item.sleep.end = rawObject.sleep_end_date;
+		item.breakfast.start = moment(+rawObject.breakfast_start_date);
+		item.breakfast.end = moment(+rawObject.breakfast_end_date);
+		item.lunch.start = moment(+rawObject.lunch_start_date);
+		item.lunch.end = moment(+rawObject.lunch_end_date);
+		item.dinner.start = moment(+rawObject.dinner_start_date);
+		item.dinner.end = moment(+rawObject.dinner_end_date);
+		item.sleep.start = moment(+rawObject.sleep_start_date);
+		item.sleep.end = moment(+rawObject.sleep_end_date);
 		return item;
 	}
 }
