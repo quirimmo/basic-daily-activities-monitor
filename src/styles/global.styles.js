@@ -30,5 +30,9 @@ export default StyleSheet.create({
 	},
 	fullFlatList: {
 		flex: 1
+	},
+	stretchedColumnBottomAligned: {
+		flex: 1,
+		justifyContent: 'flex-end'
 	}
 });

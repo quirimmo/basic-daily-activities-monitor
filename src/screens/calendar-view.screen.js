@@ -1,12 +1,12 @@
 import moment from 'moment';
 import React from 'react';
 import { View } from 'react-native';
-import { Button } from 'react-native-elements';
-import CalendarPicker from 'react-native-calendar-picker';
-import globalStyles from '../styles/global.styles';
+import CustomCalendarPicker from '../components/presentationals/custom-calendar-picker.presentational';
+import SaveItemButton from '../components/presentationals/save-item-button.presentational';
 import DayDataLoader from '../components/presentationals/day-data-loader.presentational';
 import { ManageDailyItem } from '../components/presentationals/manage-daily-item.presentational';
 import { Item } from '../models/item.model';
+import globalStyles from '../styles/global.styles';
 
 export class CalendarViewScreen extends React.Component {
 	static navigationOptions = { title: 'Calendar View' };
@@ -47,6 +47,9 @@ export class CalendarViewScreen extends React.Component {
 		}
 	}
 
+	onSetStateAfterDateChange = () =>
+		this.props.fetchItemByDate(this.state.currentDay);
+
 	onDateChange = date => {
 		this.setState(
 			{
@@ -57,7 +60,7 @@ export class CalendarViewScreen extends React.Component {
 				dinner: { start: null, end: null },
 				sleep: { start: null, end: null }
 			},
-			() => this.props.fetchItemByDate(moment(date).format('YYYY-MM-DD'))
+			this.onSetStateAfterDateChange
 		);
 	};
 
@@ -99,23 +102,19 @@ export class CalendarViewScreen extends React.Component {
 		if (this.state.key) {
 			return false;
 		}
-		return !CalendarViewScreen.configuration.every(
-			el => this.state[el].start && this.state[el].end
-		);
+		return !CalendarViewScreen.configuration.every(this.isStartEndTimeDefined);
 	};
+
+	isStartEndTimeDefined = el => this.state[el].start && this.state[el].end;
 
 	render() {
 		return this.props.isLoading ? (
 			<DayDataLoader />
 		) : (
 			<View style={globalStyles.screenContainer}>
-				<CalendarPicker
-					selectedDayColor="#2f95dc"
-					selectedDayTextColor="#fff"
-					selectedStartDate={this.state.currentDay}
-					startFromMonday={true}
+				<CustomCalendarPicker
+					currentDay={this.state.currentDay}
 					onDateChange={this.onDateChange}
-					maxDate={moment()}
 				/>
 				<ManageDailyItem
 					configuration={CalendarViewScreen.configuration}
@@ -126,19 +125,10 @@ export class CalendarViewScreen extends React.Component {
 					onSetStartTime={this.setTime}
 					onSetEndTime={this.setTime}
 				/>
-				<View
-					style={{
-						flex: 1,
-						justifyContent: 'flex-end'
-					}}
-				>
-					<Button
-						backgroundColor="#2f95dc"
-						raised
-						icon={{ name: 'save' }}
-						title="SAVE ITEM"
-						onPress={this.onSaveItem}
-						disabled={this.isSaveDisabled()}
+				<View style={globalStyles.stretchedColumnBottomAligned}>
+					<SaveItemButton
+						onSaveItem={this.onSaveItem}
+						isSaveDisabled={this.isSaveDisabled}
 					/>
 				</View>
 			</View>
