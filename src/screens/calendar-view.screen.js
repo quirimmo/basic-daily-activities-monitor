@@ -4,8 +4,9 @@ import { View } from 'react-native';
 import CustomCalendarPicker from '../components/presentationals/custom-calendar-picker.presentational';
 import SaveItemButton from '../components/presentationals/save-item-button.presentational';
 import DayDataLoader from '../components/presentationals/day-data-loader.presentational';
+import { AppMessageContainer } from '../components/containers/app-message.container';
 import { ManageDailyItem } from '../components/presentationals/manage-daily-item.presentational';
-import { Item } from '../models/item.model';
+// import { Item } from '../models/item.model';
 import globalStyles from '../styles/global.styles';
 
 export class CalendarViewScreen extends React.Component {
@@ -78,32 +79,34 @@ export class CalendarViewScreen extends React.Component {
 	};
 
 	onSaveItem = () => {
-		const item = new Item(this.state.currentDay);
-		item.initTimes(
-			this.state.breakfast,
-			this.state.lunch,
-			this.state.dinner,
-			this.state.sleep
-		);
-		try {
-			if (this.state.key) {
-				item.key = this.state.key;
-				this.props.updateItem(item);
-			} else {
-				this.props.addItem(item);
-			}
-			console.log('Item saved correctly');
-		} catch (error) {
-			console.error('Error saving the item:', item, 'Error:', error);
-		}
+		this.props.showMessage('You get an error inserting the item for the bla bla bla bla bla', 'success');
+		// const item = new Item(this.state.currentDay);
+		// item.initTimes(
+		// 	this.state.breakfast,
+		// 	this.state.lunch,
+		// 	this.state.dinner,
+		// 	this.state.sleep
+		// );
+		// try {
+		// 	if (this.state.key) {
+		// 		item.key = this.state.key;
+		// 		this.props.updateItem(item);
+		// 	} else {
+		// 		this.props.addItem(item);
+		// 	}
+		// 	console.log('Item saved correctly');
+		// } catch (error) {
+		// 	console.error('Error saving the item:', item, 'Error:', error);
+		// }
 	};
 
-	isSaveDisabled = () => {
-		if (this.state.key) {
-			return false;
-		}
-		return !CalendarViewScreen.configuration.every(this.isStartEndTimeDefined);
-	};
+	isSaveDisabled = () => false;
+	// {
+	// if (this.state.key) {
+	// 	return false;
+	// }
+	// return !CalendarViewScreen.configuration.every(this.isStartEndTimeDefined);
+	// };
 
 	isStartEndTimeDefined = el => this.state[el].start && this.state[el].end;
 
@@ -131,6 +134,7 @@ export class CalendarViewScreen extends React.Component {
 						isSaveDisabled={this.isSaveDisabled}
 					/>
 				</View>
+				<AppMessageContainer />
 			</View>
 		);
 	}
