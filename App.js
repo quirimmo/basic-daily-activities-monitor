@@ -9,6 +9,7 @@ import { reducers } from './src/reducers/reducers';
 import { mySaga } from './src/sagas/sagas';
 import globalStyles from './src/styles/global.styles';
 import { CalendarViewContainer } from './src/components/containers/calendar-view.container';
+import { AppMessageContainer } from './src/components/containers/app-message.container';
 
 const sagaMiddleware = createSagaMiddleware();
 const store = createStore(reducers, applyMiddleware(sagaMiddleware));
@@ -50,6 +51,7 @@ export default class App extends React.Component {
 				<View style={globalStyles.mainContainer}>
 					{Platform.OS === 'ios' && <StatusBar barStyle="default" />}
 					<CalendarViewContainer />
+					<AppMessageContainer />
 				</View>
 			</Provider>
 		);
